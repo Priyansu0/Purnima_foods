@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>New Sale</h1>
+
+<div class="card">
+  <form method="post" action="{{ url_for('sales_new_post') }}">
+    <div class="grid2">
+      <div>
+        <label>Customer Name</label>
+        <input name="customer_name" placeholder="Optional">
+      </div>
+      <div>
+        <label>Note</label>
+        <input name="note" placeholder="Optional">
+      </div>
+    </div>
+
+    <h3>Barcode Scan (USB Scanner)</h3>
+    <div class="muted small">
+      Click the input and scan. Barcode scanner acts like a keyboard.
+    </div>
+    <div class="row">
+      <input id="scanInput" placeholder="Scan barcode or SKU" autofocus>
+      <button class="btn ghost" type="button" onclick="scanAdd()">Add</button>
+    </div>
+
+    <h3>Items</h3>
+    <div class="muted small">Sale decreases stock.</div>
+
+    <table class="table" id="saleRows">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th class="right">Qty</th>
+          <th class="right">Unit Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button class="btn ghost" type="button" onclick="addSaleRow()">+ Add row</button>
+
+    <div class="row">
+      <button class="btn primary" type="submit">Save Sale</button>
+      <a class="btn ghost" href="{{ url_for('sales_list') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  window.ALL_ITEMS = {{ items|tojson }};
+  addSaleRow();
+</script>
+{% endblock %}

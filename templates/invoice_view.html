@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <h1>Invoice #{{ sale.id }}</h1>
+  <div class="row">
+    <a class="btn ghost" href="{{ url_for('sale_invoice_pdf', sale_id=sale.id) }}">Download PDF</a>
+    <button class="btn primary" type="button" onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="card" id="invoice">
+  <div class="row" style="align-items:flex-start;">
+    <div>
+      <h2 style="margin:0;">INVOICE</h2>
+      <div class="muted">Offline Stock System</div>
+    </div>
+    <div style="text-align:right;">
+      <div><b>Invoice #:</b> {{ sale.id }}</div>
+      <div><b>Date:</b> {{ sale.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+      <div><b>Customer:</b> {{ sale.customer_name or "-" }}</div>
+    </div>
+  </div>
+
+  <hr style="border:0;border-top:1px solid var(--border); margin:14px 0;">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th class="right">Qty</th>
+        <th class="right">Unit Price</th>
+        <th class="right">Line Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for li in sale.items %}
+      <tr>
+        <td><b>{{ li.item.name }}</b></td>
+        <td class="right">{{ li.qty }}</td>
+        <td class="right">{{ "%.2f"|format(li.unit_price) }}</td>
+        <td class="right">{{ "%.2f"|format(li.qty * li.unit_price) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+    <div style="min-width:260px;">
+      <div class="row" style="justify-content:space-between;">
+        <div><b>Grand Total</b></div>
+        <div><b>{{ "%.2f"|format(total) }}</b></div>
+      </div>
+      {% if sale.note %}
+      <div class="muted small" style="margin-top:8px;">
+        <b>Note:</b> {{ sale.note }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+@media print {
+  .topbar, .sidebar, .flash-wrap, .btn { display:none !important; }
+  .content { margin-left:0 !important; padding:0 !important; }
+  body { background:white !important; color:black !important; }
+  .card { border:none !important; }
+}
+</style>
+{% endblock %}

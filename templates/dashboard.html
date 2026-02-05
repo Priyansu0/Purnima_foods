@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="grid">
+  <div class="card">
+    <div class="kpi-title">Total Items</div>
+    <div class="kpi">{{ items_count }}</div>
+  </div>
+
+  <div class="card">
+    <div class="kpi-title">Low Stock (top 10)</div>
+    {% if low_stock %}
+      <ul class="list">
+        {% for it in low_stock %}
+          <li>
+            <b>{{ it.name }}</b>
+            <span class="muted">qty: {{ it.quantity }} / thr: {{ it.low_stock_threshold }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+      <a class="btn ghost" href="{{ url_for('reports') }}">View full list</a>
+    {% else %}
+      <div class="muted">No low-stock items 🎉</div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="row">
+      <h3>Recent Sales</h3>
+      <a class="btn primary" href="{{ url_for('sales_new') }}">New Sale</a>
+    </div>
+    {% if recent_sales %}
+      <table class="table">
+        <thead>
+          <tr><th>ID</th><th>Customer</th><th>Date</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for s in recent_sales %}
+          <tr>
+            <td>#{{ s.id }}</td>
+            <td>{{ s.customer_name or "-" }}</td>
+            <td>{{ s.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+            <td class="right">
+              <a class="btn ghost" href="{{ url_for('sale_invoice_html', sale_id=s.id) }}">Invoice</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="muted">No sales yet.</div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <h3>Recent Purchases</h3>
+      {% if current_user.role == "ADMIN" %}
+        <a class="btn primary" href="{{ url_for('purchase_new') }}">New Purchase</a>
+      {% endif %}
+    </div>
+    {% if recent_purchases %}
+      <table class="table">
+        <thead>
+          <tr><th>ID</th><th>Supplier</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+          {% for p in recent_purchases %}
+          <tr>
+            <td>#{{ p.id }}</td>
+            <td>{{ p.supplier_name or "-" }}</td>
+            <td>{{ p.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="muted">No purchases yet.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

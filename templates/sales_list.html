@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <h1>Sales</h1>
+  <a class="btn primary" href="{{ url_for('sales_new') }}">+ New Sale</a>
+</div>
+
+<div class="card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th class="right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in sales %}
+      <tr>
+        <td>#{{ s.id }}</td>
+        <td>{{ s.customer_name or "-" }}</td>
+        <td>{{ s.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+        <td class="right">
+          <a class="btn ghost" href="{{ url_for('sale_invoice_html', sale_id=s.id) }}">Invoice</a>
+          <a class="btn ghost" href="{{ url_for('sale_invoice_pdf', sale_id=s.id) }}">PDF</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

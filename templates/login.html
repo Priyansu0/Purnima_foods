@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="center">
+  <div class="card w400">
+    <h2>Login</h2>
+    <form method="post" action="{{ url_for('login_post') }}">
+      <label>Username</label>
+      <input name="username" autocomplete="username" required>
+      <label>Password</label>
+      <input name="password" type="password" autocomplete="current-password" required>
+      <button class="btn primary w100" type="submit">Login</button>
+    </form>
+    <div class="muted small" style="margin-top:10px;">
+      Default users: admin/admin123, staff/staff123
+    </div>
+  </div>
+</div>
+{% endblock %}

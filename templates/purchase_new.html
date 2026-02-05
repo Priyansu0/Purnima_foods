@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>New Purchase</h1>
+
+<div class="card">
+  <form method="post" action="{{ url_for('purchase_new_post') }}">
+    <div class="grid2">
+      <div>
+        <label>Supplier Name</label>
+        <input name="supplier_name" placeholder="Optional">
+      </div>
+      <div>
+        <label>Note</label>
+        <input name="note" placeholder="Optional">
+      </div>
+    </div>
+
+    <h3>Items</h3>
+    <div class="muted small">Purchase increases stock.</div>
+
+    <table class="table" id="rows">
+      <thead>
+        <tr><th>Item</th><th class="right">Qty</th><th class="right">Unit Cost</th><th></th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button class="btn ghost" type="button" onclick="addPurchaseRow()">+ Add row</button>
+
+    <div class="row">
+      <button class="btn primary" type="submit">Save Purchase</button>
+      <a class="btn ghost" href="{{ url_for('purchases_list') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  window.ALL_ITEMS = {{ items|tojson }};
+  addPurchaseRow();
+</script>
+{% endblock %}

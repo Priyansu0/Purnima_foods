@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Reports</h1>
+
+<div class="card">
+  <form method="get" class="row">
+    <div>
+      <label>Start</label>
+      <input type="date" name="start" value="{{ start }}">
+    </div>
+    <div>
+      <label>End</label>
+      <input type="date" name="end" value="{{ end }}">
+    </div>
+    <div style="align-self:end">
+      <button class="btn primary" type="submit">Run</button>
+    </div>
+  </form>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="kpi-title">Total Revenue</div>
+    <div class="kpi">{{ "%.2f"|format(total_rev) }}</div>
+  </div>
+  <div class="card">
+    <div class="kpi-title">Total Qty Sold</div>
+    <div class="kpi">{{ total_qty }}</div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Top Items (by revenue)</h3>
+    {% if top_items %}
+    <table class="table">
+      <thead><tr><th>Item</th><th class="right">Qty</th><th class="right">Revenue</th></tr></thead>
+      <tbody>
+        {% for r in top_items %}
+        <tr>
+          <td>{{ r.name }}</td>
+          <td class="right">{{ r.qty }}</td>
+          <td class="right">{{ "%.2f"|format(r.rev) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <div class="muted">No sales in this range.</div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Low Stock Alerts</h3>
+    {% if low_stock %}
+    <table class="table">
+      <thead><tr><th>Item</th><th class="right">Qty</th><th class="right">Threshold</th></tr></thead>
+      <tbody>
+        {% for it in low_stock %}
+        <tr class="danger-row">
+          <td>{{ it.name }}</td>
+          <td class="right">{{ it.quantity }}</td>
+          <td class="right">{{ it.low_stock_threshold }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <div class="muted">No low-stock items 🎉</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

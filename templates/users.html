@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>User Management</h1>
+
+<div class="card">
+  <h3>Create User</h3>
+  <form method="post" action="{{ url_for('users_new') }}" class="grid2">
+    <div>
+      <label>Username</label>
+      <input name="username" required>
+    </div>
+    <div>
+      <label>Password</label>
+      <input name="password" type="password" required>
+    </div>
+    <div>
+      <label>Role</label>
+      <select name="role">
+        <option value="STAFF">STAFF</option>
+        <option value="ADMIN">ADMIN</option>
+      </select>
+    </div>
+    <div style="align-self:end">
+      <button class="btn primary" type="submit">Create</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Existing Users</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th><th>Username</th><th>Role</th><th>Created</th><th class="right">Password Reset</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.username }}</td>
+        <td>{{ u.role }}</td>
+        <td>{{ u.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+        <td class="right">
+          <form method="post" action="{{ url_for('admin_reset_password', user_id=u.id) }}"
+                style="display:inline-flex; gap:8px; align-items:center;">
+            <input name="new_password" type="password" placeholder="New password" style="width:160px;" required>
+            <button class="btn danger" type="submit" onclick="return confirm('Reset password for {{u.username}}?')">Reset</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

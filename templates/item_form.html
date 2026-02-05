@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ "Edit Item" if item else "New Item" }}</h1>
+
+<div class="card">
+  <form method="post"
+        action="{{ url_for('item_edit_post', item_id=item.id) if item else url_for('item_new_post') }}">
+    <div class="grid2">
+      <div>
+        <label>Name</label>
+        <input name="name" value="{{ item.name if item else '' }}" required>
+
+        <label>Category</label>
+        <input name="category" value="{{ item.category if item else '' }}">
+
+        <label>SKU</label>
+        <input name="sku" value="{{ item.sku if item else '' }}">
+
+        <label>Barcode</label>
+        <input name="barcode" value="{{ item.barcode if item else '' }}">
+      </div>
+
+      <div>
+        <label>Quantity</label>
+        <input name="quantity" type="number" min="0" value="{{ item.quantity if item else 0 }}" required>
+
+        <label>Cost Price</label>
+        <input name="cost_price" type="number" step="0.01" min="0" value="{{ item.cost_price if item else 0 }}">
+
+        <label>Sell Price</label>
+        <input name="sell_price" type="number" step="0.01" min="0" value="{{ item.sell_price if item else 0 }}">
+
+        <label>Low-stock threshold</label>
+        <input name="low_stock_threshold" type="number" min="0"
+               value="{{ item.low_stock_threshold if item else 5 }}">
+      </div>
+    </div>
+
+    <div class="row">
+      <button class="btn primary" type="submit">Save</button>
+      <a class="btn ghost" href="{{ url_for('items_list') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

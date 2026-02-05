@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <h1>Purchases</h1>
+  {% if current_user.role == "ADMIN" %}
+    <a class="btn primary" href="{{ url_for('purchase_new') }}">+ New Purchase</a>
+  {% endif %}
+</div>
+
+<div class="card">
+  <table class="table">
+    <thead>
+      <tr><th>ID</th><th>Supplier</th><th>Date</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      {% for p in purchases %}
+      <tr>
+        <td>#{{ p.id }}</td>
+        <td>{{ p.supplier_name or "-" }}</td>
+        <td>{{ p.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+        <td>{{ p.note or "-" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
