@@ -11,6 +11,28 @@ function toggleTheme() {
   if (saved) document.documentElement.setAttribute("data-theme", saved);
 })();
 
+// Profile dropdown menu
+function toggleProfileMenu() {
+  const menu = document.getElementById("profileMenu");
+  const dropdown = document.querySelector(".profile-dropdown");
+  
+  if (menu && dropdown) {
+    menu.classList.toggle("show");
+    dropdown.classList.toggle("active");
+  }
+}
+
+// Close profile menu when clicking outside
+document.addEventListener("click", function(event) {
+  const dropdown = document.querySelector(".profile-dropdown");
+  const menu = document.getElementById("profileMenu");
+  
+  if (dropdown && menu && !dropdown.contains(event.target)) {
+    menu.classList.remove("show");
+    dropdown.classList.remove("active");
+  }
+});
+
 // ----------------------
 // Purchases dynamic rows
 // ----------------------

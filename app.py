@@ -245,8 +245,14 @@ def logout():
 
 
 # ---------------------------
-# Password Change (self)
+# Profile & Password Change (self)
 # ---------------------------
+
+@app.get("/account/profile")
+@login_required
+def account_profile():
+    return render_template("profile.html")
+
 
 @app.get("/account/password")
 @login_required
